@@ -6,18 +6,126 @@
     <title>Sheet</title>
     <meta charset="utf-8" />
 
-    <link rel="stylesheet" type="text/css" href='sheet.css' />
+    <style>
+    #bg {
+        background-image: url(top.png), url(repeat.png);
+        background-repeat: no-repeat, repeat-y;
+        background-size: 854px 957px, auto;
+        background-attachment: scroll, scroll;
+        background-position: 0px 0px, 0px 106px;
+        width: 854px;
+        color: white;
+        margin: 0 auto 0 auto;
+    }
+    #bg-bot {
+        background-image: url(bot.png);
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: top left;
+        width: 854px;
+        height: 125px;
+        color: white;
+        margin: auto;
+    }
+    </style>
 
     <!-- Include AngularJS from Google's CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-resource.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-resource.js"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-animate.min.js"></script>-->
+
+    <script type="text/javascript">
+    angular.module("Sheet", [])
+        .directive("resizes",
+            function() {
+                return {
+                    link: function(scope, element) {
+                        var e = element[0];
+
+                        function resize() {
+                            console.log((e.offsetHeight - 957 + 15) % 213);
+                            if ((e.offsetHeight - 957 + 15) % 213 !== 0) {
+                                var repeats = (e.offsetHeight - 957) / 213;
+                                console.log(repeats);
+                                var minHeight = 957 + Math.ceil(repeats) * 213 - 15;
+                                e.style.minHeight = minHeight.toString() + "px";
+                                console.log("New: " + (minHeight - 957 + 15) % 213);
+                            }
+                        }
+
+                        scope.$watch(e.offsetHeight, function() {
+                            resize();
+                        });
+                    }
+                }
+            });
+    </script>
 
 </head>
 
-<body>
-
-
+<body ng-app="Sheet" style="background-color: black">
+    <div id="bg" resizes>
+        <div style="padding:150px 150px 0 150px;">
+            TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>
+            <h2>AND</h2>AGAIN
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+            <br>TESTING STUFF
+        </div>
+    </div>
+    <div id="bg-bot"></div>
 </body>
 
 </html>
