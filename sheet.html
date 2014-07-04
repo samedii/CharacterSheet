@@ -115,9 +115,14 @@
                             e.style.width = e.scrollWidth + "px";
                         }
 
-                        $interval(setWidth, 10, 20)
+                        function resetWidth() {
+                            e.style.width = "0px";
+                            $interval(setWidth, 10, 20)
+                        }
 
-                        element.bind("change", setWidth);
+                        resetWidth();
+
+                        element.bind("change", resetWidth);
                     }
                 };
             }
