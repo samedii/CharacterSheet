@@ -7,6 +7,19 @@
     <meta charset="utf-8" />
 
     <style>
+    @font-face {
+        font-family:"king_and_queen";
+        src: url("the_king_and_queen_font.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }
+    html {
+        font-family:"king_and_queen", Arial, sans-serif;
+        font-size: 14px;
+        color: white;
+        -webkit-font-smoothing: antialiased;
+        font-smooth:always;
+    }
     #bg {
         background-image: url(top.png), url(repeat.png);
         background-repeat: no-repeat, repeat-y;
@@ -14,7 +27,6 @@
         background-attachment: scroll, scroll;
         background-position: 0px 0px, 0px 106px;
         width: 854px;
-        color: white;
         margin: 0 auto 0 auto;
     }
     #bg-bot {
@@ -24,8 +36,19 @@
         background-position: top left;
         width: 854px;
         height: 125px;
-        color: white;
         margin: auto;
+    }
+    input {
+        font-family:"king_and_queen", Arial, sans-serif;
+        display: inline;
+        border: 0 transparent;
+        background-color: transparent;
+        font-size: inherit;
+        color: inherit;
+        margin: 0;
+        padding: 0;
+        overflow-x: visible;
+        width: 10px;
     }
     </style>
 
@@ -35,39 +58,19 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-resource.js"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-animate.min.js"></script>-->
 
-    <script type="text/javascript">
-    angular.module("Sheet", [])
-        .directive("resizes",
-            function() {
-                return {
-                    link: function(scope, element) {
-                        var e = element[0];
-
-                        function resize() {
-                            console.log((e.offsetHeight - 957 + 15) % 213);
-                            if ((e.offsetHeight - 957 + 15) % 213 !== 0) {
-                                var repeats = (e.offsetHeight - 957) / 213;
-                                console.log(repeats);
-                                var minHeight = 957 + Math.ceil(repeats) * 213 - 15;
-                                e.style.minHeight = minHeight.toString() + "px";
-                                console.log("New: " + (minHeight - 957 + 15) % 213);
-                            }
-                        }
-
-                        scope.$watch(e.offsetHeight, function() {
-                            resize();
-                        });
-                    }
-                }
-            });
-    </script>
-
 </head>
 
 <body ng-app="Sheet" style="background-color: black">
-    <div id="bg" resizes>
-        <div style="padding:150px 150px 0 150px;">
+    <div id="bg" resizes-to-fit-bg>
+        <div style="padding:150px 150px 0 150px; height: 100%">
+            <h1>
+                <input test type="text" value="Joar Stenhamn" />
+            </h1>
+            <label style="float: right">Spelare:
+                <input test type="text" value="Richard" />
+            </label>
             TESTING STUFF
+            <br>Test this shit
             <br>TESTING STUFF
             <br>TESTING STUFF
             <br>TESTING STUFF
@@ -79,53 +82,51 @@
             <br>TESTING STUFF
             <br>TESTING STUFF
             <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>
-            <h2>AND</h2>AGAIN
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
+
+
         </div>
     </div>
     <div id="bg-bot"></div>
+
+    <script type="text/javascript">
+    angular.module("Sheet", [])
+        .directive("test", [
+            "$interval",
+            function($interval) {
+            return {
+                link: function(scope, element) {
+                    var e = element[0];
+
+                    function setWidth() {
+                        e.style.width = e.scrollWidth + "px";
+                    }
+
+                    $interval(setWidth,10,20)
+
+                    element.bind("change", setWidth);
+                }
+            };
+        }])
+        .directive("resizesToFitBg", function() {
+            return {
+                link: function(scope, element) {
+                    var e = element[0];
+
+                    function resize() {
+                        if ((e.offsetHeight - 957 + 15) % 213 !== 0) {
+                            var repeats = (e.offsetHeight - 957) / 213;
+                            var minHeight = 957 + Math.ceil(repeats) * 213 - 15;
+                            e.style.minHeight = minHeight.toString() + "px";
+                        }
+                    }
+
+                    scope.$watch(e.offsetHeight, function() {
+                        resize();
+                    });
+                }
+            };
+        });
+    </script>
 </body>
 
 </html>
