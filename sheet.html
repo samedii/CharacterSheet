@@ -50,6 +50,28 @@
         overflow-x: visible;
         width: 10px;
     }
+    textarea {
+        font-family:"king_and_queen", Arial, sans-serif;
+        font-size: 12px;
+        display: inline;
+        border: 0 transparent;
+        background-color: transparent;
+        font-size: inherit;
+        color: inherit;
+        margin: 0;
+        padding: 0;
+        overflow-x: visible;
+        width: 100%;
+        resize: none;
+    }
+    h1 {
+        font-size: 30px;
+        font-weight: normal;
+    }
+    h2 {
+        font-size: 20px;
+        font-weight: normal;
+    }
     </style>
 
     <!-- Include AngularJS from Google's CDN -->
@@ -63,25 +85,17 @@
 <body ng-app="Sheet" style="background-color: black">
     <div id="bg" resizes-to-fit-bg>
         <div style="padding:150px 150px 0 150px; height: 100%">
-            <h1>
-                <input test type="text" value="Joar Stenhamn" />
-            </h1>
-            <label style="float: right">Spelare:
-                <input test type="text" value="Richard" />
-            </label>
-            TESTING STUFF
-            <br>Test this shit
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
-            <br>TESTING STUFF
+            <div style="position:relative; height: 130px">
+                <h1>
+                    <input resizes-width type="text" placeholder="Rollpersonens namn" value="" style="min-width: 320px" />
+                </h1>
+                <label style="position: absolute; bottom: 0; right: 0">Spelare:
+                    <input resizes-width type="text" placeholder="Namn" value="" style="min-width: 65px" />
+                </label>
+            </div>
+            <h2 style="margin: -30px 0 -30px 0">Beskrivning</h2>
+            <textarea resizes-height placeholder="Beskrivande text"></textarea>
+
 
 
         </div>
@@ -90,23 +104,44 @@
 
     <script type="text/javascript">
     angular.module("Sheet", [])
-        .directive("test", [
+        .directive("resizesWidth", [
             "$interval",
             function($interval) {
-            return {
-                link: function(scope, element) {
-                    var e = element[0];
+                return {
+                    link: function(scope, element) {
+                        var e = element[0];
 
-                    function setWidth() {
-                        e.style.width = e.scrollWidth + "px";
+                        function setWidth() {
+                            e.style.width = e.scrollWidth + "px";
+                        }
+
+                        $interval(setWidth, 10, 20)
+
+                        element.bind("change", setWidth);
                     }
+                };
+            }
+        ])
+        .directive("resizesHeight", [
+            "$interval",
+            function($interval) {
+                return {
+                    link: function(scope, element) {
 
-                    $interval(setWidth,10,20)
+                        //TODO THIS 
+                        var e = element[0];
 
-                    element.bind("change", setWidth);
-                }
-            };
-        }])
+                        function setWidth() {
+                            e.style.width = e.scrollWidth + "px";
+                        }
+
+                        $interval(setWidth, 10, 20)
+
+                        element.bind("change", setWidth);
+                    }
+                };
+            }
+        ])
         .directive("resizesToFitBg", function() {
             return {
                 link: function(scope, element) {
