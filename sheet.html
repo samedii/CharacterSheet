@@ -8,14 +8,20 @@
 
     <style>
     @font-face {
-        font-family:"king_and_queen";
-        src: url("the_king_and_queen_font.ttf") format("truetype");
+        font-family:"titleFont";
+        src: url("EG_Dragon_Caps.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family:"textFont";
+        src: url("Jellyka_Estrya_Handwriting.ttf") format("truetype");
         font-weight: normal;
         font-style: normal;
     }
     html {
-        font-family:"king_and_queen", Arial, sans-serif;
-        font-size: 14px;
+        font-family:"textFont", sans-serif;
+        font-size: 50px;
         color: white;
         -webkit-font-smoothing: antialiased;
         font-smooth:always;
@@ -39,7 +45,7 @@
         margin: -15px auto 0 auto;
     }
     input {
-        font-family:"king_and_queen", Arial, sans-serif;
+        font-family: inherit;
         display: inline;
         border: 0 transparent;
         background-color: transparent;
@@ -51,7 +57,7 @@
         width: 10px;
     }
     textarea {
-        font-family:"king_and_queen", Arial, sans-serif;
+        font-family: inherit;
         font-size: 12px;
         display: inline;
         border: 0 transparent;
@@ -65,10 +71,12 @@
         resize: none;
     }
     h1 {
+        font-family: "titleFont";
         font-size: 30px;
         font-weight: normal;
     }
     h2 {
+        font-family: "titleFont";
         font-size: 20px;
         font-weight: normal;
     }
@@ -87,14 +95,16 @@
         <div style="padding:150px 150px 0 150px; height: 100%">
             <div style="position:relative; height: 130px">
                 <h1>
-                    <input resizes-width type="text" placeholder="Rollpersonens namn" value="" style="min-width: 320px" />
+                    <input type="text" placeholder="Rollpersonens namn" value="Joar Stenhamn" style="min-width: 320px" />
                 </h1>
                 <label style="position: absolute; bottom: 0; right: 0">Spelare:
-                    <input resizes-width type="text" placeholder="Namn" value="" style="min-width: 65px" />
+                    <input type="text" placeholder="Namn" value="" style="min-width: 65px" />
                 </label>
             </div>
             <h2 style="margin: -30px 0 -30px 0">Beskrivning</h2>
-            <textarea resizes-height placeholder="Beskrivande text"></textarea>
+            <textarea style="height: 500px" placeholder="Karaktärsbeskrivning">&nbsp;
+Min karaktärsbeskrivning börjar här
+och fortsätter...</textarea>
 
 
 
@@ -104,53 +114,72 @@
 
     <script type="text/javascript">
     angular.module("Sheet", [])
-        .directive("resizesWidth", [
+        .directive("input", [
             "$interval",
             function($interval) {
                 return {
+                    restrict: "E",
                     link: function(scope, element) {
                         var e = element[0];
 
                         function setWidth() {
-                            e.style.width = e.scrollWidth + "px";
+                            element.css("width", e.scrollWidth + "px");
                         }
 
                         function resetWidth() {
-                            e.style.width = "0px";
+                            element.css("width", 0);
                             $interval(setWidth, 10, 20)
                         }
 
                         resetWidth();
 
-                        element.bind("change", resetWidth);
+                        element.on("input", function() {
+                            setWidth();
+                            e.defaultValue = e.value;
+                        });
+
+                        element.on("change", function() {
+                            resetWidth();
+                            e.defaultValue = e.value;
+                        });
                     }
                 };
             }
         ])
-        .directive("resizesHeight", [
+        .directive("textarea", [
             "$interval",
             function($interval) {
                 return {
+                    restrict: "E",
                     link: function(scope, element) {
-
-                        //TODO THIS 
                         var e = element[0];
 
-                        function setWidth() {
-                            e.style.width = e.scrollWidth + "px";
+                        function setHeight() {
+                            element.css("height", e.scrollHeight + "px");
                         }
 
-                        $interval(setWidth, 10, 20)
+                        function resetHeight() {
+                            element.css("height", 0);
+                            $interval(setHeight, 10, 20)
+                        }
 
-                        element.bind("change", setWidth);
+                        resetHeight();
+
+                        element.on("input", function() {
+                            resetHeight();
+                            e.defaultValue = e.value;
+                        });
+
                     }
                 };
             }
         ])
         .constant("topHeight", 957)
+        .constant("repeatHeight", 213)
         .directive("resizesToFitBg", [
             "topHeight",
-            function(topHeight) {
+            "repeatHeight",
+            function(topHeight, repeatHeight) {
                 return {
                     link: function(scope, element) {
                         var e = element[0];
@@ -160,11 +189,11 @@
                             var height = e.clientHeight;
 
                             if (height <= topHeight) {
-                                e.style.minHeight = (topHeight+213) + "px";
+                                e.style.minHeight = (topHeight+repeatHeight) + "px";
                             } else {
                                 var extraHeight = height - topHeight;
-                                var extra = extraHeight / 213;
-                                e.style.minHeight = (topHeight + Math.ceil(extra) * 213) + "px";
+                                var extra = extraHeight / repeatHeight;
+                                e.style.minHeight = (topHeight + Math.ceil(extra) * repeatHeight) + "px";
                             }
                         }
 
