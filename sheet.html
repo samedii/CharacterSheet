@@ -36,7 +36,7 @@
         background-position: top left;
         width: 854px;
         height: 125px;
-        margin: auto;
+        margin: -15px auto 0 auto;
     }
     input {
         font-family:"king_and_queen", Arial, sans-serif;
@@ -142,25 +142,32 @@
                 };
             }
         ])
-        .directive("resizesToFitBg", function() {
-            return {
-                link: function(scope, element) {
-                    var e = element[0];
+        .constant("topHeight", 957)
+        .directive("resizesToFitBg", [
+            "topHeight",
+            function(topHeight) {
+                return {
+                    link: function(scope, element) {
+                        var e = element[0];
 
-                    function resize() {
-                        if ((e.offsetHeight - 957 + 15) % 213 !== 0) {
-                            var repeats = (e.offsetHeight - 957) / 213;
-                            var minHeight = 957 + Math.ceil(repeats) * 213 - 15;
-                            e.style.minHeight = minHeight.toString() + "px";
+                        function resize() {
+
+                            var height = e.clientHeight;
+
+                            if (height <= topHeight) {
+                                e.style.minHeight = (topHeight+213) + "px";
+                            } else {
+                                var extraHeight = height - topHeight;
+                                var extra = extraHeight / 213;
+                                e.style.minHeight = (topHeight + Math.ceil(extra) * 213) + "px";
+                            }
                         }
-                    }
 
-                    scope.$watch(e.offsetHeight, function() {
                         resize();
-                    });
+                    }
                 }
-            };
-        });
+            }
+        ]);
     </script>
 </body>
 
