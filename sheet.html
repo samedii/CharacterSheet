@@ -61,7 +61,7 @@
         height: 125px;
         margin: -15px auto 0 auto;
     }
-    input {
+    input[type="text"] {
         font-family: inherit;
         display: inline;
         border: 0 transparent;
@@ -71,7 +71,7 @@
         margin: 0;
         padding: 0 !important;
         overflow-x: visible;
-        width: 10px;
+        width: 16px;
     }
     textarea {
         font-family: inherit;
@@ -83,7 +83,7 @@
         color: inherit;
         margin: 0;
         padding: 0 !important;
-        overflow-x: visible;
+        overflow: hidden;
         width: 100%;
         resize: none;
         line-height: inherit;
@@ -110,7 +110,7 @@
         font-size: 12px;
         vertical-align: middle;
     }
-    label input {
+    label input[type="text"] {
         font-family:"textFont";
         font-size: 40px;
         vertical-align: middle;
@@ -124,9 +124,94 @@
         width: 100%;
         position: relative;
     }
+    .characteristics label>span {
+        position: absolute;
+        right: 0px;
+        top: 50%;
+        margin-top: -4px;
+    }
     .characteristics label>input {
         position: absolute;
         right: 0px;
+    }
+    .dots-container {
+        display: inline-block;
+    }
+    .dots {
+        background: url(dot.png) repeat-x scroll;
+        background-size: auto;
+        height: 8px;
+        position: relative;
+        height: 30px;
+        display: inline-block;
+    }
+    .ctrl {
+        position: absolute;
+        right: -50px;
+        top: -6px;
+    }
+    .ctrl input {
+        -moz-box-shadow:inset 0px 0px 14px -3px #f2fadc;
+        -webkit-box-shadow:inset 0px 0px 14px -3px #f2fadc;
+        box-shadow:inset 0px 0px 14px -3px #f2fadc;
+        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dbe6c4), color-stop(1, #9ba892));
+        background:-moz-linear-gradient(top, #dbe6c4 5%, #9ba892 100%);
+        background:-webkit-linear-gradient(top, #dbe6c4 5%, #9ba892 100%);
+        background:-o-linear-gradient(top, #dbe6c4 5%, #9ba892 100%);
+        background:-ms-linear-gradient(top, #dbe6c4 5%, #9ba892 100%);
+        background:linear-gradient(to bottom, #dbe6c4 5%, #9ba892 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dbe6c4', endColorstr='#9ba892', GradientType=0);
+        background-color:#dbe6c4;
+        -moz-border-radius:6px;
+        -webkit-border-radius:6px;
+        border-radius:6px;
+        border:1px solid #b2b8ad;
+        display:inline-block;
+        cursor:pointer;
+        color:#757d6f;
+        font-family:arial;
+        font-size:10px;
+        font-weight:bold;
+        padding:3px 6px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #ced9bf;
+        outline: none;
+        height: 18px;
+        font-size: 7px;
+        width: 18px;
+    }
+    .ctrl input:hover {
+        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #9ba892), color-stop(1, #dbe6c4));
+        background:-moz-linear-gradient(top, #9ba892 5%, #dbe6c4 100%);
+        background:-webkit-linear-gradient(top, #9ba892 5%, #dbe6c4 100%);
+        background:-o-linear-gradient(top, #9ba892 5%, #dbe6c4 100%);
+        background:-ms-linear-gradient(top, #9ba892 5%, #dbe6c4 100%);
+        background:linear-gradient(to bottom, #9ba892 5%, #dbe6c4 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9ba892', endColorstr='#dbe6c4', GradientType=0);
+        background-color:#9ba892;
+    }
+    .ctrl .plus {
+        position: absolute;
+        right: 28px;
+        top: -9px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .ctrl .minus {
+        position: absolute;
+        right: 28px;
+        top: 9px;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+    }
+    .ctrl .cross {
+        position: absolute;
+        right: 0px;
+        height: 20px;
+        width: 20px;
+        vertical-align: top;
+        border-radius: 9px;
+        line-height: 13px;
     }
     </style>
 
@@ -134,7 +219,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-resource.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-animate.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-animate.min.js"></script>
 
 </head>
 
@@ -143,32 +228,113 @@
         <div style="padding:150px 150px 0 150px; height: 100%">
             <div style="position:relative; height: 120px">
                 <h1>
-                    <input type="text" placeholder="Rollpersonens namn" value="Joar Stenhamn" style="min-width: 320px" />
+                    <input resizes type="text" placeholder="Rollpersonens namn" value="Joar Stenhamn" style="min-width: 320px" />
                 </h1>
                 <label style="font-size: 14px; position: absolute; bottom: 0; right: 0;">Spelare:
-                    <input type="text" placeholder="Namn" value="Richard Hermanson" style="min-width: 65px; font-size: 60px" />
+                    <input resizes type="text" placeholder="Namn" value="Richard Hermanson" style="min-width: 65px; font-size: 60px" />
                 </label>
             </div>
             <div>
                 <h2 style="margin: -30px 0 0 0">Beskrivning</h2>
-                <textarea style="margin: 4px 4px 20px 4px;" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Min karaktärsbeskrivning följer efter denna text och den fortsätter och forrtsättter tills det blir ny rad och då ser vi vad som händer. Med alla mina rader.</textarea>
+                <textarea style="margin: 4px 4px 20px 4px" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Min karaktärsbeskrivning följer efter denna text och den fortsätter och forrtsättter tills det blir ny rad och då ser vi vad som händer.</textarea>
             </div>
             <div style="clear: both">
                 <div class="characteristics" style="width: 40%; float: left">
                     <h2>Karaktäriseringar</h2>
-                    <div>
-                        <label>Fysik
-                            <input type="text" placeholder="" value="***" />
+                    <div characteristic>
+                        <label ng-mouseover="startShowCtrl()">Fysik
+                            <span class="dotsContainer">
+                                <span class="dots" ng-style="{'width': (noOfDots*11)+'px'}">
+                                    <div class="ctrl" ng-show="showCtrl">
+                                        <div style="position: relative">
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots>=5" />
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots<=0" />
+                                            <input class="cross" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" />
+                                        </div>
+                                    </div>
+                                    <input dots required type="hidden" value="3" ng-model="noOfDots" />
+                                </span>
+                            </span>
                         </label>
                     </div>
-                    <div>
-                        <label>Psyke
-                            <input type="text" placeholder="" value="**" />
+                    <div characteristic>
+                        <label ng-mouseover="startShowCtrl()">Styrka
+                            <span class="dotsContainer">
+                                <span class="dots" ng-style="{'width': (noOfDots*11)+'px'}">
+                                    <div class="ctrl" ng-show="showCtrl">
+                                        <div style="position: relative">
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots>=5" />
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots<=0" />
+                                            <input class="cross" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" />
+                                        </div>
+                                    </div>
+                                    <input dots required type="hidden" value="3" ng-model="noOfDots" />
+                                </span>
+                            </span>
                         </label>
                     </div>
-                    <div>
-                        <label>Smidighet
-                            <input type="text" placeholder="" value="*****" />
+                    <div characteristic>
+                        <label ng-mouseover="startShowCtrl()">Psyke
+                            <span class="dotsContainer">
+                                <span class="dots" ng-style="{'width': (noOfDots*11)+'px'}">
+                                    <div class="ctrl" ng-show="showCtrl">
+                                        <div style="position: relative">
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots>=5" />
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots<=0" />
+                                            <input class="cross" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" />
+                                        </div>
+                                    </div>
+                                    <input dots required type="hidden" value="3" ng-model="noOfDots" />
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                    <div characteristic>
+                        <label ng-mouseover="startShowCtrl()">Smidighet
+                            <span class="dotsContainer">
+                                <span class="dots" ng-style="{'width': (noOfDots*11)+'px'}">
+                                    <div class="ctrl" ng-show="showCtrl">
+                                        <div style="position: relative">
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots>=5" />
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots<=0" />
+                                            <input class="cross" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" />
+                                        </div>
+                                    </div>
+                                    <input dots type="hidden" value="3" ng-model="noOfDots" />
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                    <div characteristic>
+                        <label ng-mouseover="startShowCtrl()">Intelligens
+                            <span class="dotsContainer">
+                                <span class="dots" ng-style="{'width': (noOfDots*11)+'px'}">
+                                    <div class="ctrl" ng-show="showCtrl">
+                                        <div style="position: relative">
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots>=5" />
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots<=0" />
+                                            <input class="cross" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" />
+                                        </div>
+                                    </div>
+                                    <input dots type="hidden" value="3" ng-model="noOfDots" />
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                    <div characteristic>
+                        <label ng-mouseover="startShowCtrl()">Perception
+                            <span class="dotsContainer">
+                                <span class="dots" ng-style="{'width': (noOfDots*11)+'px'}">
+                                    <div class="ctrl" ng-show="showCtrl">
+                                        <div style="position: relative">
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots>=5" />
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots<=0" />
+                                            <input class="cross" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" />
+                                        </div>
+                                    </div>
+                                    <input dots type="hidden" value="3" ng-model="noOfDots" />
+                                </span>
+                            </span>
                         </label>
                     </div>
                 </div>
@@ -176,10 +342,10 @@
             <div style="width: 60%; float: right; text-align: right">
                 <h2>Äventyrspoäng</h2>
                 <label>Totalt
-                    <input type="text" placeholder="" value="67" style="min-width: 60px" />
+                    <input resizes type="text" placeholder="" value="67" style="min-width: 60px" />
                 </label>
                 <label style="text-align: right">Nya
-                    <input type="text" placeholder="" value="10" style="min-width: 10px" />
+                    <input resizes type="text" placeholder="" value="10" style="min-width: 16px" />
                 </label>
             </div>
         </div>
@@ -189,23 +355,54 @@
     <div id="bot"></div>
 
     <script type="text/javascript">
-    angular.module("Sheet", [])
-        .directive("input", [
-            "$interval",
-            function($interval) {
+    angular.module("Sheet", ["ngAnimate"])
+        .directive("characteristics", [
+            function() {
                 return {
-                    restrict: "E",
+                    link: function(scope, element) {
+
+                    }
+                };
+            }
+        ])
+        .directive("resizes", [
+            "$interval",
+            "$timeout",
+            function($interval, $timeout) {
+                return {
                     link: function(scope, element) {
                         var e = element[0];
 
                         function setWidth() {
                             element.css("width", e.scrollWidth + "px");
+                            element.css("display", "initial");
                         }
 
                         function resetWidth() {
-                            element.css("width", 0);
-                            $interval(setWidth, 10, 20)
-                        }
+                            var cachedOffsetWidth = e.offsetWidth;
+                            element.css("height", "auto");
+                            element.css("display", "none");
+
+                            var time = 0;
+
+                            function helper() {
+
+                                if (e.offsetWidth !== cachedOffsetWidth) {
+
+                                    cachedOffsetWidth = e.offsetWidth;
+                                    setWidth();
+                                } else if (e.scrollWidth > e.offsetWidth) {
+
+                                    cachedOffsetWidth = e.offsetWidth;
+                                    setWidth();
+                                }
+
+                                if (time < 5000)
+                                    $timeout(helper, time = time * 2);
+                            }
+
+                            $timeout(helper, time++);
+                        };
 
                         resetWidth();
 
@@ -214,7 +411,7 @@
                             e.defaultValue = e.value;
                         });
 
-                        element.on("change", function() {
+                        element.on("blur", function() {
                             resetWidth();
                             e.defaultValue = e.value;
                         });
@@ -224,7 +421,8 @@
         ])
         .directive("textarea", [
             "$interval",
-            function($interval) {
+            "$timeout",
+            function($interval, $timeout) {
                 return {
                     restrict: "E",
                     link: function(scope, element) {
@@ -232,12 +430,32 @@
 
                         function setHeight() {
                             element.css("height", e.scrollHeight + "px");
+                            element.css("display", "initial");
                         }
 
                         function resetHeight() {
-                            element.css("height", 0);
-                            $interval(setHeight, 10, 20);
-                        }
+                            var cachedOffsetHeight = e.offsetHeight;
+                            element.css("height", "auto");
+                            element.css("display", "none");
+
+                            var time = 0;
+
+                            function helper() {
+
+                                if (e.offsetHeight !== cachedOffsetHeight) {
+                                    cachedOffsetHeight = e.offsetHeight;
+                                    setHeight();
+                                } else if (e.scrollHeight > e.offsetHeight) {
+                                    cachedOffsetHeight = e.offsetHeight;
+                                    setHeight();
+                                }
+
+                                if (time < 5000)
+                                    $timeout(helper, time = time * 2);
+                            }
+
+                            $timeout(helper, time++);
+                        };
 
                         resetHeight();
 
@@ -246,7 +464,7 @@
                             e.defaultValue = e.value;
                         });
 
-                        element.on("change", function() {
+                        element.on("blur", function() {
                             resetHeight();
                             e.defaultValue = e.value;
                         });
@@ -282,8 +500,58 @@
                     }
                 }
             }
+        ])
+        .directive("characteristic", [
+            "$timeout",
+            function($timeout) {
+                return {
+                    restrict: "A",
+                    scope: true,
+                    link: function(scope, element) {
+                        var timer;
+                        scope.startShowCtrl = function() {
+
+                            $timeout.cancel(timer);
+                            scope.showCtrl = true;
+
+                            timer = $timeout(function() {
+                                scope.showCtrl = false;
+                            }, 2000);
+                        };
+
+                        scope.deleteCharacteristic = function() {
+                            element.remove();
+                            scope.$destroy();
+                        };
+                    }
+                }
+            }
+        ])
+        .directive("dots", [
+            function() {
+                return {
+                    link: function(scope, element) {
+                        var e = element[0];
+                        scope.noOfDots = parseInt(e.defaultValue);
+
+                        scope.$watch("noOfDots", function() {
+                            e.defaultValue = scope.noOfDots;
+                        });
+                    }
+                }
+            }
+        ])
+        .directive("required", [
+            function() {
+                return {
+                    link: function(scope, element) {
+                        scope.required = true;
+                    }
+                }
+            }
         ]);
     </script>
+
 </body>
 
 </html>
