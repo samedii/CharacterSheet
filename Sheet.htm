@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
-
-<head>
+<!-- saved from url=(0066)file:///C:/Users/samedi/Documents/GitHub/CharacterSheet/sheet.html -->
+<html><script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
 
     <title>Sheet</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
 
     <style>
     @font-face {
@@ -222,44 +221,43 @@
 
     <!-- Include AngularJS from Google's CDN -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-resource.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular-animate.min.js"></script>
+    <script src="./Sheet_files/angular.js"></script>
+    <script src="./Sheet_files/angular-resource.js"></script>
+    <script src="./Sheet_files/angular-animate.min.js"></script>
 
 </head>
 
-<body ng-app="Sheet">
-    <div id="top" resizes-to-fit-bg>
+<body ng-app="Sheet" class="ng-scope">
+    <div id="top" resizes-to-fit-bg="" style="min-height: 1170px;">
         <div style="padding:150px 150px 0 150px; height: 100%">
             <div style="position:relative; height: 120px">
                 <h1>
-                    <input resizes type="text" placeholder="Rollpersonens namn" value="Joar Stenhamn" style="min-width: 320px" />
+                    <input resizes="" type="text" placeholder="Rollpersonens namn" value="Joar Stenhamn" style="min-width: 320px; height: auto; width: 326px;">
                 </h1>
                 <label style="font-size: 14px; position: absolute; bottom: 0; right: 0;">Spelare:
-                    <input resizes type="text" placeholder="Namn" value="Richard Hermanson" style="min-width: 65px; font-size: 60px" />
+                    <input resizes="" type="text" placeholder="Namn" value="Richard Hermanson" style="min-width: 65px; font-size: 60px; height: auto; width: 132px;">
                 </label>
             </div>
             <div>
                 <h2 style="margin: -30px 0 0 0">Beskrivning</h2>
-                <textarea style="margin: 4px 4px 20px 4px" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Min karaktärsbeskrivning följer efter denna text och den fortsätter och forrtsättter tills det blir ny rad och då ser vi vad som händer.</textarea>
+                <textarea style="margin: 4px 4px 20px; height: 64px;" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Min karaktärsbeskrivning följer efter denna text och den fortsätter och forrtsättter tills det blir ny rad och då ser vi vad som händer.</textarea>
             </div>
             <div style="clear: both">
                 <div class="characteristics" style="width: 40%; float: left">
                     <h2>Karaktäriseringar</h2>
-                    <input storage="json" type="hidden" value='[{"name":"Fysik", "value":3, "required": true}, {"name":"Styrka", "value":1, "required": true}, {"name":"Smidighet", "value":1, "required": false}]' ng-model="characteristics">
-                    <div characteristic ng-repeat="skill in characteristics" ng-attr-required="skill.required">
+                    <div characteristic="" class="ng-scope">
                         <label ng-mouseover="startShowCtrl()">
-                            <input type="text" ng-model="skill.name" ng-focus="focusedSkillName($event)" />
+                            <input type="text" value="Fysik">
                             <span class="dotsContainer">
-                                <span class="dots" ng-style="{'width': (skill.value*11)+'px'}">
-                                    <div class="ctrl" ng-show="showCtrl">
+                                <span class="dots" ng-style="{&#39;width&#39;: (noOfDots*11)+&#39;px&#39;}" style="width: 44px;">
+                                    <div class="ctrl ng-hide" ng-show="showCtrl">
                                         <div style="position: relative">
-                                            <input class="plus" type="button" value="+" ng-click="skill.value=skill.value+1" ng-disabled="skill.value>=5 || !showCtrl" />
-                                            <input class="minus" type="button" value="-" ng-click="skill.value=skill.value-1" ng-disabled="skill.value<=0  || !showCtrl" />
-                                            <input class="cross" type="button" value="x" ng-click="characteristics.splice($index)" ng-disabled="required" ng-hide="required" />
+                                            <input class="plus" type="button" value="+" ng-click="noOfDots=noOfDots+1" ng-disabled="noOfDots&gt;=5 || !showCtrl" disabled="disabled">
+                                            <input class="minus" type="button" value="-" ng-click="noOfDots=noOfDots-1" ng-disabled="noOfDots&lt;=0  || !showCtrl" disabled="disabled">
+                                            <input class="cross ng-hide" type="button" value="x" ng-click="deleteCharacteristic()" ng-disabled="required" ng-hide="required" disabled="disabled">
                                         </div>
                                     </div>
-                                    <input type="hidden" ng-model="skill.value" />
+                                    <input dots="" required="" type="hidden" value="4" ng-model="noOfDots" class="ng-pristine ng-valid ng-valid-required">
                                 </span>
                             </span>
                         </label>
@@ -269,10 +267,10 @@
             <div style="width: 60%; float: right; text-align: right">
                 <h2>Äventyrspoäng</h2>
                 <label>Totalt
-                    <input resizes type="text" placeholder="" value="67" style="min-width: 60px" />
+                    <input resizes="" type="text" placeholder="" value="67" style="min-width: 60px; height: auto; width: 60px;">
                 </label>
                 <label style="text-align: right">Nya
-                    <input resizes type="text" placeholder="" value="10" style="min-width: 16px" />
+                    <input resizes="" type="text" placeholder="" value="10" style="min-width: 16px; height: auto; width: 16px;">
                 </label>
             </div>
         </div>
@@ -283,6 +281,15 @@
 
     <script type="text/javascript">
     angular.module("Sheet", ["ngAnimate"])
+        .directive("characteristics", [
+            function() {
+                return {
+                    link: function(scope, element) {
+
+                    }
+                };
+            }
+        ])
         .directive("resizes", [
             "$interval",
             "$timeout",
@@ -326,10 +333,12 @@
 
                         element.on("input", function() {
                             setWidth();
+                            e.defaultValue = e.value;
                         });
 
                         element.on("blur", function() {
                             resetWidth();
+                            e.defaultValue = e.value;
                         });
                     }
                 };
@@ -424,7 +433,6 @@
                     restrict: "A",
                     scope: true,
                     link: function(scope, element) {
-
                         var timer;
                         scope.startShowCtrl = function() {
 
@@ -436,43 +444,24 @@
                             }, 2000);
                         };
 
-                        scope.focusedSkillName = function($event) {
-                            //element.after();
-
-                            element.removeAttr("last");
+                        scope.deleteCharacteristic = function() {
+                            element.remove();
+                            scope.$destroy();
                         };
-
                     }
                 }
             }
         ])
-        .directive("storage", [
+        .directive("dots", [
             function() {
                 return {
-                    link: function(scope, element, attrs) {
+                    link: function(scope, element) {
                         var e = element[0];
+                        scope.noOfDots = parseInt(e.defaultValue);
 
-                        switch (attrs.storage) {
-                            case "json":
-                                scope[attrs.ngModel] = angular.fromJson(e.defaultValue);
-                                scope.$watch(attrs.ngModel, function() {
-                                    e.defaultValue = angular.toJson(scope[attrs.ngModel]);
-                                }, true);
-                                break;
-                            case "number":
-                                scope[attrs.ngModel] = parseInt(e.defaultValue);
-                                scope.$watch(attrs.ngModel, function() {
-                                    e.defaultValue = scope[attrs.ngModel].toString();
-                                });
-                                break;
-                            case "text":
-                            default:
-                                scope[attrs.ngModel] = e.defaultValue;
-                                scope.$watch(attrs.ngModel, function() {
-                                    e.defaultValue = scope[attrs.ngModel];
-                                });
-                                break;
-                        }
+                        scope.$watch("noOfDots", function() {
+                            e.defaultValue = scope.noOfDots;
+                        });
                     }
                 }
             }
@@ -480,14 +469,15 @@
         .directive("required", [
             function() {
                 return {
-                    link: function(scope, element, attrs) {
-                        scope.required = scope.skill.required;
+                    link: function(scope, element) {
+                        scope.required = true;
                     }
-                };
+                }
             }
         ]);
     </script>
 
-</body>
 
-</html>
+
+
+</body></html>
