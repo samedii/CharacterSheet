@@ -316,9 +316,9 @@
                 <div class="health">
                     <div style="line-height: 22px">
                         <h2 style="width: 112px">Kropp</h2>
-                        <h3 style="width: 61px; text-align: right">KP</h3>
-                        <h3 style="width: 34px; text-align: right">RV</h3>
-                        <h3 style="width: 66px; text-align: right">Skador</h3>
+                        <h3 style="width: 54px; text-align: right">kp</h3>
+                        <h3 style="width: 36px; text-align: right">rv</h3>
+                        <h3 style="width: 72px; text-align: right">Skador</h3>
                     </div>
                     <input type="hidden" storage="json" value='[
                     {"name":"Huvud", "hit":"1-2", "armor": "3", "damage": "2", "divider": 7},
@@ -337,16 +337,18 @@
                             <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px" type="text" ng-model="part.armor" />
                         </div>
                         <div style="width: 62px; height: 30px; text-align: center">
-                            <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px; font-weight: bold" ng-style='{"color":dangerColor(part.damage, part.divider)}' type="text" ng-model="part.damage" />
+                            <input style="width: 40px; height: 30px; text-align: right; position: relative; top: -4px; font-weight: bold" ng-style='{"color":dangerColor(part.damage, part.divider)}' type="text" ng-model="part.damage" />
                         </div>
                     </div>
                     <div>
                     <div>
                     <label>Blödning <span style="display: inline-block; width: 40px; text-align: right">-3</span></label>
+                    <!-- RED IF YOU DIE FROM BLEEDING SOON -->
                     </div>
                     <div>
                     <label><input type="text" value="4" /></label>
-                    <div>/5</div>
+                    <!-- DO A HOVER CONTROL -->
+                    <div>/{{NKP()/2 | round}}</div>
                     </div>
                     </div>
                 </div>
