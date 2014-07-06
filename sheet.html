@@ -365,11 +365,15 @@
                             <span style="font-family: 'textFont';font-size: 40px; vertical-align: middle">+</span>
                             {{subtotalDamage()}}
                         </div>
+                        <div class="blood" ng-show="canBleedOnTotal()" ng-click="bleedsOnTotal=!bleedsOnTotal" ng-mouseenter="shouldShowCrossForTotal=bleedsOnTotal" ng-mouseleave="shouldShowCrossForTotal=!bleedsOnTotal">
+                            <input storage="text" type="hidden" value="true" ng-model="bleedsOnTotal" />
+                            <div style="position: relative; bottom: 7px; left: 4px" ng-show="shouldShowCrossForTotal">x</div>
+                        </div>
                     </div>
                     <div style="text-align: right">
                         <div>
-                            <label style="font-size: 10px; margin-right: 5px">Blödning
-                                <span style="display: inline-block; width: 20px; text-align: right" ng-style='{"color":dangerColor(bleeding()*5/(nominalHealth()/2+10+constitution()-totalDamage()))}'>
+                            <label style="font-size: 10px; margin-right: 5px">Blödningstakt
+                                <span style="display: inline-block; width: 20px; text-align: right" ng-style='{"color":dangerColor(bleedingDanger())}'>
                                     <span ng-hide="bleeding()==0">-</span>{{bleeding()}}</span>
                             </label>
                         </div>
@@ -436,15 +440,34 @@
                     return $scope.subtotalDamage();
                 };
 
+                $scope.canBleedOnTotal = function() {
+                    return $scope.totalDamage() >= $scope.nominalHealth() / 2;
+                }
+
+                $scope.$watch("canBleedOnTotal()", function(oldValue, newValue) {
+                    $scope.bleedsOnTotal = newValue;
+                });
+
                 $scope.bleeding = function() {
                     var bleeding = 0;
                     angular.forEach($scope.bodyparts, function(part, index) {
                         bleeding += part.bleeding;
                     });
-                    if ($scope.totalDamage() >= $scope.nominalHealth() / 2)
-                        bleeding++;
+                    bleeding += $scope.bleedsOnTotal;
                     return bleeding;
                 };
+
+                $scope.bleedingDanger = function() {
+                    var temp = $scope.nominalHealth() / 2 + 10 + $scope.constitution() - $scope.totalDamage();
+                    if (temp <= 0)
+                        return 1;
+                    var danger = $scope.bleeding() * 5 / (temp);
+                    if (danger > 1)
+                        return 1;
+                    if (danger < 0)
+                        return 0;
+                    return danger;
+                }
 
                 $scope.totalArmor = function() {
                     var sum = 0;
@@ -462,9 +485,9 @@
                 };
 
                 $scope.canBleed = function(damage, divider) {
-                    var hp = Math.round($scope.nominalHealth()/divider);
+                    var hp = Math.round($scope.nominalHealth() / divider);
                     var dmg = parseInt(damage);
-                    if(dmg && !isNaN(dmg))
+                    if (dmg && !isNaN(dmg))
                         return dmg > hp;
                     return false;
                 };
