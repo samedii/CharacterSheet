@@ -589,6 +589,8 @@
                         function setHeight() {
                             element.css("height", e.scrollHeight + "px");
                             element.css("display", "initial");
+
+                            scope.resizeBg();
                         }
 
                         function resetHeight() {
@@ -643,7 +645,7 @@
 
                         function resize() {
 
-                            var height = e.clientHeight;
+                            var height = e.scrollHeight;
 
                             if (height <= topHeight) {
                                 e.style.minHeight = (topHeight + repeatHeight) + "px";
@@ -655,6 +657,8 @@
                         }
 
                         resize();
+
+                        scope.resizeBg = resize;
                     }
                 }
             }
