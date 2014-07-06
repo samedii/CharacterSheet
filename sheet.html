@@ -51,6 +51,7 @@
         bottom: 0;
         left: 0;
         right: 0;
+        z-index: -1;
     }
     #bot {
         background-image: url(bot.png);
@@ -60,6 +61,7 @@
         width: 854px;
         height: 125px;
         margin: -15px auto 0 auto;
+        z-index: -1;
     }
     input {
         width: 16px;
@@ -84,11 +86,11 @@
         font-size: inherit;
         color: inherit;
         margin: 0;
-        padding: 0 !important;
+        padding: 4px;
         overflow: hidden;
         width: 100%;
         resize: none;
-        line-height: inherit;
+        line-height: 36px;
     }
     h1 {
         font-family:"titleFont";
@@ -280,7 +282,7 @@
             </div>
             <div>
                 <h2 style="margin: -30px 0 0 0">Beskrivning</h2>
-                <textarea style="margin: 4px 4px 20px 4px" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Min karaktärsbeskrivning följer efter denna text och den fortsätter och forrtsättter tills det blir ny rad och då ser vi vad som händer.</textarea>
+                <textarea style="margin: 0 0 20px 0" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Min karaktärsbeskrivning följer efter denna text och den fortsätter och forrtsättter tills det blir ny rad och då ser vi vad som händer.</textarea>
             </div>
             <div style="clear: both">
                 <div class="characteristics" style="width: 40%; float: left">
@@ -299,7 +301,7 @@
                     ]' ng-model="characteristics">
                     <div characteristic ng-repeat="skill in characteristics">
                         <label ng-mouseover="startShowCtrl()">
-                            <input type="text" ng-model="skill.name" ng-focus='$last ? characteristics.push({"name":"", "value":0, "required": false}) : 0' />
+                            <input type="text" ng-model="skill.name" ng-focus='focusedSkillName($last)' />
                             <span class="dotsContainer">
                                 <span class="dots" ng-style="{'width': (skill.value*11)+'px'}">
                                     <div class="ctrl" ng-show="showCtrl">
@@ -381,6 +383,19 @@
                     <!-- Can bleed other than just from dmg? -->
                     <!-- Journal -->
                 </div>
+                <div style="margin: 10px 0 10px 30px; text-align: left; position: relative">
+                    <h2 style="text-align: left; border-bottom: 1px solid white; margin-bottom: 4px">Vapen och sköldar</h2>
+                    <textarea style="width: 70%" placeholder="Jag är obeväpnad!" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                    <textarea style="width: 20%; text-align: right; position: absolute; right: 0" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                </div>
+                <div style="margin: 10px 0 10px 30px; text-align: left">
+                    <h2 style="text-align: left; border-bottom: 1px solid white; margin-bottom: 4px">Utrustning</h2>
+                    <textarea placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">Äventyrsutrustning (5/5)</textarea>
+                </div>
+            </div>
+            <div style="width: 100%; display: inline-block">
+                <h2>Journal</h2>
+                <textarea placeholder="Min berättelse börjar här..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
             </div>
         </div>
         <div id="repeat"></div>
@@ -587,7 +602,13 @@
                         var e = element[0];
 
                         function setHeight() {
-                            element.css("height", e.scrollHeight + "px");
+                            var paddingTop = parseInt(window.getComputedStyle(e, null).getPropertyValue('padding-top'));
+                            var paddingBottom = parseInt(window.getComputedStyle(e, null).getPropertyValue('padding-bottom'));
+                            if (!paddingTop || isNaN(paddingTop))
+                                paddingTop = 0;
+                            if (!paddingBottom || isNaN(paddingTop))
+                                paddingTop = 0;
+                            element.css("height", (e.scrollHeight - paddingTop - paddingBottom) + "px");
                             element.css("display", "initial");
 
                             scope.resizeBg();
@@ -682,10 +703,15 @@
                             }, 2000);
                         };
 
-                        scope.focusedSkillName = function($event) {
-                            //element.after();
-
-                            element.removeAttr("last");
+                        scope.focusedSkillName = function(isLast) {
+                            if (isLast) {
+                                scope.characteristics.push({
+                                    "name": "",
+                                    "value": 0,
+                                    "required": false
+                                });
+                                $timeout(scope.resizeBg, 10);
+                            }
                         };
                     }
                 }
