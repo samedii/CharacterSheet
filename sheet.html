@@ -203,6 +203,7 @@
         top: -9px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
+        z-index: 1000;
     }
     .ctrl .minus {
         position: absolute;
@@ -210,6 +211,7 @@
         top: 9px;
         border-top-right-radius: 0;
         border-top-left-radius: 0;
+        z-index: 1000;
     }
     .ctrl .cross {
         position: absolute;
@@ -219,6 +221,7 @@
         vertical-align: top;
         border-radius: 9px;
         line-height: 13px;
+        z-index: 1000;
     }
     .health {
         margin: 10px 0 10px 30px;
@@ -237,13 +240,12 @@
     }
     .health>:not(:first-child)>:nth-child(1) {
         font-family:"titleFont";
-        font-size: 9px;
+        font-size: 7px;
     }
     .health>:not(:first-child)>:nth-child(2) {
         font-family:"titleFont";
         font-size: 10px;
     }
-
     </style>
 
     <!-- Include AngularJS from Google's CDN -->
@@ -319,24 +321,33 @@
                         <h3 style="width: 66px; text-align: right">Skador</h3>
                     </div>
                     <input type="hidden" storage="json" value='[
-                    {"name":"Huvud", "hit":"1-2", "armor": "3", "damage": "2", "divider": 6},
+                    {"name":"Huvud", "hit":"1-2", "armor": "3", "damage": "2", "divider": 7},
                     {"name":"Höger arm", "hit":"3-4", "armor": "3", "damage": "0", "divider": 6},
                     {"name":"Vänster arm", "hit":"5-6", "armor": "3", "damage": "0", "divider": 6},
-                    {"name":"Bröstkorg", "hit":"7-11", "armor": "3", "damage": "3", "divider": 6},
-                    {"name":"Mage", "hit":"12-14", "armor": "3", "damage": "1", "divider": 6},
-                    {"name":"Höger ben", "hit":"15-17", "armor": "3", "damage": "7", "divider": 6},
-                    {"name":"Vänster ben", "hit":"18-20", "armor": "3", "damage": "4", "divider": 6}
+                    {"name":"Bröstkorg", "hit":"7-11", "armor": "3", "damage": "3", "divider": 4},
+                    {"name":"Mage", "hit":"12-14", "armor": "3", "damage": "1", "divider": 5},
+                    {"name":"Höger ben", "hit":"15-17", "armor": "3", "damage": "7", "divider": 5},
+                    {"name":"Vänster ben", "hit":"18-20", "armor": "3", "damage": "4", "divider": 5}
                     ]' ng-model="bodyparts">
                     <div ng-repeat="part in bodyparts" style="font-size: 40px; line-height: 30px">
                         <div style="width: 42px; text-align: center">{{part.hit}}</div>
                         <div style="width: 95px">{{part.name}}</div>
-                        <div style="width: 25px; text-align: center; font-family: 'titleFont'; font-size: 9px; height: 27px">{{NKP()/part.divider | round}}</div>
+                        <div style="width: 25px; text-align: center; font-family: 'titleFont'; font-size: 9px; height: 27px" >{{NKP()/part.divider | round}}</div>
                         <div style="width: 48px; height: 30px; text-align: right">
                             <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px" type="text" ng-model="part.armor" />
                         </div>
                         <div style="width: 62px; height: 30px; text-align: center">
-                            <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px" type="text" ng-model="part.damage" />
+                            <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px; font-weight: bold" ng-style='{"color":dangerColor(part.damage, part.divider)}' type="text" ng-model="part.damage" />
                         </div>
+                    </div>
+                    <div>
+                    <div>
+                    <label>Blödning <span style="display: inline-block; width: 40px; text-align: right">-3</span></label>
+                    </div>
+                    <div>
+                    <label><input type="text" value="4" /></label>
+                    <div>/5</div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -352,6 +363,22 @@
             function($scope) {
                 $scope.NKP = function() {
                     return 30 + ($scope.characteristics[0].value + $scope.characteristics[1].value) * 5;
+                }
+
+                $scope.dangerColor = function(damage, divider) {
+
+                    var hp = Math.round($scope.NKP()/divider);
+
+                    var percentage =  damage/hp;
+                    if(percentage > 1)
+                        percentage = 1;
+
+                    var red = Math.round(255/4 + 3*255/4*percentage);
+                    var other = 255-red;
+                    if(other > red) {
+                        red = other;
+                    }
+                    return "rgb(" + red + ", "+other+", "+other+")";
                 }
             }
         ])
