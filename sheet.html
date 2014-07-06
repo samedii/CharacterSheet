@@ -246,6 +246,17 @@
         font-family:"titleFont";
         font-size: 10px;
     }
+    .blood {
+        background-image: url(blood.png);
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: top left;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        font-family:"Arial";
+        font-size:13px;
+    }
     </style>
 
     <!-- Include AngularJS from Google's CDN -->
@@ -321,36 +332,50 @@
                         <h3 style="width: 72px; text-align: right">Skador</h3>
                     </div>
                     <input type="hidden" storage="json" value='[
-                    {"name":"Huvud", "hit":"1-2", "armor": "3", "damage": "2", "divider": 7},
-                    {"name":"Höger arm", "hit":"3-4", "armor": "3", "damage": "0", "divider": 6},
-                    {"name":"Vänster arm", "hit":"5-6", "armor": "3", "damage": "0", "divider": 6},
-                    {"name":"Bröstkorg", "hit":"7-11", "armor": "3", "damage": "3", "divider": 4},
-                    {"name":"Mage", "hit":"12-14", "armor": "3", "damage": "1", "divider": 5},
-                    {"name":"Höger ben", "hit":"15-17", "armor": "3", "damage": "7", "divider": 5},
-                    {"name":"Vänster ben", "hit":"18-20", "armor": "3", "damage": "4", "divider": 5}
+                    {"name":"Huvud", "hit": {"from":"1", "to":"2"}, "armor": "3", "damage": "12", "divider": 7, "bleeding": true},
+                    {"name":"Höger arm", "hit": {"from":"3", "to":"4"}, "armor": "3", "damage": "0", "divider": 6, "bleeding": false},
+                    {"name":"Vänster arm", "hit": {"from":"5", "to":"6"}, "armor": "3", "damage": "0", "divider": 6, "bleeding": false},
+                    {"name":"Bröstkorg", "hit": {"from":"7", "to":"11"}, "armor": "3", "damage": "3", "divider": 4, "bleeding": false},
+                    {"name":"Mage", "hit": {"from":"12", "to":"14"}, "armor": "3", "damage": "1", "divider": 5, "bleeding": false},
+                    {"name":"Höger ben", "hit": {"from":"15", "to":"17"}, "armor": "3", "damage": "14", "divider": 5, "bleeding": true},
+                    {"name":"Vänster ben", "hit": {"from":"18", "to":"20"}, "armor": "3", "damage": "4", "divider": 5, "bleeding": false}
                     ]' ng-model="bodyparts">
                     <div ng-repeat="part in bodyparts" style="font-size: 40px; line-height: 30px">
-                        <div style="width: 42px; text-align: center">{{part.hit}}</div>
+                        <div style="width: 42px; text-align: center">{{part.hit.from}}-{{part.hit.to}}</div>
                         <div style="width: 95px">{{part.name}}</div>
-                        <div style="width: 25px; text-align: center; font-family: 'titleFont'; font-size: 9px; height: 27px" >{{NKP()/part.divider | round}}</div>
-                        <div style="width: 48px; height: 30px; text-align: right">
+                        <div style="width: 25px; text-align: center; font-family: 'titleFont'; font-size: 9px; height: 27px">{{nominalHealth()/part.divider | round}}</div>
+                        <div style="width: 56px; height: 30px; text-align: center">
                             <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px" type="text" ng-model="part.armor" />
                         </div>
-                        <div style="width: 62px; height: 30px; text-align: center">
-                            <input style="width: 40px; height: 30px; text-align: right; position: relative; top: -4px; font-weight: bold" ng-style='{"color":dangerColor(part.damage, part.divider)}' type="text" ng-model="part.damage" />
+                        <div style="width: 50px; height: 30px; text-align: right">
+                            <input style="width: 40px; height: 30px; text-align: right; position: relative; top: -4px; font-weight: bold" ng-style='{"color":dangerColor(part.damage, part.divider)}' type="text" ng-model="part.damage" ng-change="changedDamage(part)" />
+                        </div>
+                        <div class="blood" ng-show="part.bleeding || canBleed(part.damage, part.divider)" ng-click="part.bleeding=!part.bleeding" ng-mouseenter="shouldShowCross=part.bleeding" ng-mouseleave="shouldShowCross=!part.bleeding">
+                            <div style="position: relative; bottom: 7px; left: 4px" ng-show="shouldShowCross">x</div>
                         </div>
                     </div>
-                    <div>
-                    <div>
-                    <label>Blödning <span style="display: inline-block; width: 40px; text-align: right">-3</span></label>
-                    <!-- RED IF YOU DIE FROM BLEEDING SOON -->
+                    <div style="font-size: 40px; line-height: 30px; font-family: 'titleFont'; font-size: 9px; margin-top: 10px">
+                        <div style="width: 42px; text-align: center"></div>
+                        <div style="width: 95px">Helhet</div>
+                        <div style="width: 36px; text-align: center; height: 27px">{{nominalHealth()/2 | round}}</div>
+                        <div style="width: 56px; height: 30px; text-align: center; height: 27px">{{totalArmor()}} ({{averageArmor()}})</div>
+                        <div style="width: 51px; height: 30px; text-align: right;  height: 27px" ng-style='{"color":dangerColor(totalDamage(), 2)}'>
+
+                            <input resizes storage="text" style="min-width: 10px; height: 30px;font-family: 'textFont';font-size: 40px;font-weight: bold;vertical-align: top;position: relative;top: -6px" type="text" ng-model="otherDamage" value="2" />
+                            <span style="font-family: 'textFont';font-size: 40px; vertical-align: middle">+</span>
+                            {{subtotalDamage()}}
+                        </div>
                     </div>
-                    <div>
-                    <label><input type="text" value="4" /></label>
-                    <!-- DO A HOVER CONTROL -->
-                    <div>/{{NKP()/2 | round}}</div>
+                    <div style="text-align: right">
+                        <div>
+                            <label style="font-size: 10px; margin-right: 5px">Blödning
+                                <span style="display: inline-block; width: 20px; text-align: right" ng-style='{"color":dangerColor(bleeding()*5/(nominalHealth()/2+10+constitution()-totalDamage()))}'>
+                                    <span ng-hide="bleeding()==0">-</span>{{bleeding()}}</span>
+                            </label>
+                        </div>
                     </div>
-                    </div>
+                    <!-- Can bleed other than just from dmg? -->
+                    <!-- Journal -->
                 </div>
             </div>
         </div>
@@ -360,28 +385,116 @@
 
     <script type="text/javascript">
     angular.module("Sheet", ["ngAnimate"])
+        .run(function() {
+            var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+
+            if (!is_chrome) {
+                alert("Denna sida är byggd och testad på Chrome och kan se förskräcklig ut i andra läsare. Fortsätt på egen risk...");
+            }
+            /*
+            window.onbeforeunload = function(e) {
+                var message = "Kom du ihåg att spara?",
+                    e = e || window.event;
+                // For IE and Firefox
+                if (e) {
+                    e.returnValue = message;
+                }
+
+                // For Safari
+                return message;
+            };*/
+        })
         .controller("SheetCtrl", [
             "$scope",
             function($scope) {
-                $scope.NKP = function() {
-                    return 30 + ($scope.characteristics[0].value + $scope.characteristics[1].value) * 5;
-                }
 
-                $scope.dangerColor = function(damage, divider) {
 
-                    var hp = Math.round($scope.NKP()/divider);
+                $scope.constitution = function() {
+                    return $scope.characteristics[0].value;
+                };
+                $scope.willpower = function() {
+                    return $scope.characteristics[1].value;
+                };
+                $scope.nominalHealth = function() {
+                    return 30 + ($scope.constitution() + $scope.willpower()) * 5;
+                };
 
-                    var percentage =  damage/hp;
-                    if(percentage > 1)
-                        percentage = 1;
+                $scope.subtotalDamage = function() {
+                    var sum = 0;
+                    angular.forEach($scope.bodyparts, function(part, index) {
+                        var dmg = parseInt(part.damage);
+                        if (dmg && !isNaN(dmg))
+                            sum += dmg;
+                    });
+                    return sum;
+                };
 
-                    var red = Math.round(255/4 + 3*255/4*percentage);
-                    var other = 255-red;
-                    if(other > red) {
+                $scope.totalDamage = function() {
+                    var other = parseInt($scope.otherDamage)
+                    if (other && !isNaN(other))
+                        return $scope.subtotalDamage() + other;
+                    return $scope.subtotalDamage();
+                };
+
+                $scope.bleeding = function() {
+                    var bleeding = 0;
+                    angular.forEach($scope.bodyparts, function(part, index) {
+                        bleeding += part.bleeding;
+                    });
+                    if ($scope.totalDamage() >= $scope.nominalHealth() / 2)
+                        bleeding++;
+                    return bleeding;
+                };
+
+                $scope.totalArmor = function() {
+                    var sum = 0;
+                    angular.forEach($scope.bodyparts, function(part, index) {
+                        var armor = parseInt(part.armor);
+                        if (armor && !isNaN(armor))
+                        //sum += armor * (parseInt(part.hit.to) - parseInt(part.hit.from) + 1);
+                            sum += armor;
+                    });
+                    return sum;
+                };
+
+                $scope.averageArmor = function() {
+                    return Math.round($scope.totalArmor() / 7);
+                };
+
+                $scope.canBleed = function(damage, divider) {
+                    var hp = Math.round($scope.nominalHealth()/divider);
+                    var dmg = parseInt(damage);
+                    if(dmg && !isNaN(dmg))
+                        return dmg > hp;
+                    return false;
+                };
+
+                $scope.changedDamage = function(part) {
+                    part.bleeding = $scope.canBleed(part.damage, part.divider); //TODO: Fix, this isn't good
+                };
+
+                $scope.dangerColor = function(damageOrDanger, divider) {
+
+                    var percentage;
+                    if (divider) {
+
+                        var hp = Math.round($scope.nominalHealth() / divider);
+
+                        percentage = damageOrDanger / hp;
+                        if (percentage > 1)
+                            percentage = 1;
+                    } else {
+                        percentage = damageOrDanger > 1 ? 1 : damageOrDanger;
+                    }
+
+                    var red = Math.round(255 / 4 + 3 * 255 / 4 * percentage);
+                    var other = 255 - red;
+                    if (other > red) {
                         red = other;
                     }
-                    return "rgb(" + red + ", "+other+", "+other+")";
-                }
+                    return "rgb(" + red + ", " + other + ", " + other + ")";
+                };
+
             }
         ])
         .filter("round", function() {
