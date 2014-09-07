@@ -290,14 +290,12 @@
                     <h2>Karaktärsdrag</h2>
                     <input storage="json" type="hidden" value='[
                     {"name":"Fysik", "value":3, "required": true},
-                    {"name":"Psyke", "value":1, "required": true},
+                    {"name":"Psyke", "value":1, "required": false},
                     {"name":"Styrka", "value":3, "required": false},
                     {"name":"Smidighet", "value":2, "required": false},
                     {"name":"Intelligens", "value":4, "required": false},
                     {"name":"Perception", "value":5, "required": false},
                     {"name":"Karisma", "value":1, "required": false},
-                    {"name":"Svärdskunskap", "value":3, "required": false},
-                    {"name":"Besvärjelsekonst", "value":4, "required": false},
                     {"name":"", "value":0, "required": false}
                     ]' ng-model="characteristics">
                     <div clean='<div ng-repeat="skill in characteristics" class="debug"><div characteristic></div></div>'></div>
@@ -314,58 +312,27 @@
                 <div class="health">
                     <div style="line-height: 22px">
                         <h2 style="width: 112px">Kropp</h2>
-                        <h3 style="width: 54px; text-align: right">kp</h3>
-                        <h3 style="width: 36px; text-align: right">rv</h3>
-                        <h3 style="width: 72px; text-align: right">Skador</h3>
+                        <h3 style="width: 50px; text-align: right">rv</h3>
+                        <h3 style="width: 120px; text-align: right">Skador</h3>
                     </div>
                     <input type="hidden" storage="json" value='[
-                    {"name":"Huvud", "hit": {"from":"1", "to":"2"}, "armor": "3", "damage": "12", "divider": 7, "bleeding": true},
-                    {"name":"Höger arm", "hit": {"from":"3", "to":"4"}, "armor": "3", "damage": "0", "divider": 6, "bleeding": false},
-                    {"name":"Vänster arm", "hit": {"from":"5", "to":"6"}, "armor": "3", "damage": "0", "divider": 6, "bleeding": false},
-                    {"name":"Bröstkorg", "hit": {"from":"7", "to":"11"}, "armor": "3", "damage": "3", "divider": 4, "bleeding": false},
-                    {"name":"Mage", "hit": {"from":"12", "to":"14"}, "armor": "3", "damage": "1", "divider": 5, "bleeding": false},
-                    {"name":"Höger ben", "hit": {"from":"15", "to":"17"}, "armor": "3", "damage": "14", "divider": 5, "bleeding": true},
-                    {"name":"Vänster ben", "hit": {"from":"18", "to":"20"}, "armor": "3", "damage": "4", "divider": 5, "bleeding": false}
+                    {"name":"Huvud", "hit": 1, "armor": "3", "damage": "Testar detta"},
+                    {"name":"Höger arm", "hit": 2, "armor": "3", "damage": ""},
+                    {"name":"Vänster arm", "hit": 3, "armor": "3", "damage": ""},
+                    {"name":"Torso", "hit": 4, "armor": "3", "damage": ""},
+                    {"name":"Höger ben", "hit": 5, "armor": "3", "damage": ""},
+                    {"name":"Vänster ben", "hit": 6, "armor": "3", "damage": ""}
                     ]' ng-model="bodyparts">
                     <div ng-repeat="part in bodyparts" style="font-size: 40px; line-height: 30px">
-                        <div style="width: 42px; text-align: center">{{part.hit.from}}-{{part.hit.to}}</div>
+                        <div style="width: 42px; text-align: center">{{part.hit}}</div>
                         <div style="width: 95px">{{part.name}}</div>
-                        <div style="width: 25px; text-align: center; font-family: 'titleFont'; font-size: 9px; height: 27px">{{nominalHealth()/part.divider | round}}</div>
-                        <div style="width: 56px; height: 30px; text-align: center">
-                            <input style="width: 40px; height: 30px; text-align: center; position: relative; top: -4px" type="text" ng-model="part.armor" />
+                        <div style="width: 35px; height: 30px; text-align: center">
+                            <input style="width: 20px; height: 30px; text-align: left; position: relative; top: -4px" type="text" ng-model="part.armor" />
                         </div>
-                        <div style="width: 50px; height: 30px; text-align: right">
-                            <input style="width: 40px; height: 30px; text-align: right; position: relative; top: -4px; font-weight: bold" ng-style='{"color":dangerColor(part.damage, part.divider)}' type="text" ng-model="part.damage" ng-change="changedDamage(part)" />
-                        </div>
-                        <div class="blood" ng-show="part.bleeding || canBleed(part.damage, part.divider)" ng-click="part.bleeding=!part.bleeding" ng-mouseenter="shouldShowCross=part.bleeding" ng-mouseleave="shouldShowCross=!part.bleeding">
-                            <div style="position: relative; bottom: 7px; left: 4px" ng-show="shouldShowCross">x</div>
+                        <div style="width: 100px; height: 30px; text-align: left">
+                            <input style="width: 100px; height: 30px; text-align: right; position: relative; top: -4px" type="text" ng-model="part.damage" />
                         </div>
                     </div>
-                    <div style="font-size: 40px; line-height: 30px; font-family: 'titleFont'; font-size: 9px; margin-top: 10px">
-                        <div style="width: 42px; text-align: center"></div>
-                        <div style="width: 95px">Helhet</div>
-                        <div style="width: 36px; text-align: center; height: 27px">{{nominalHealth()/2 | round}}</div>
-                        <div style="width: 56px; height: 30px; text-align: center; height: 27px">{{totalArmor()}} ({{averageArmor()}})</div>
-                        <div style="width: 51px; height: 30px; text-align: right;  height: 27px" ng-style='{"color":dangerColor(totalDamage(), 2)}'>
-
-                            <input resizes storage="text" style="min-width: 10px; height: 30px;font-family: 'textFont';font-size: 40px;font-weight: bold;vertical-align: top;position: relative;top: -6px" type="text" ng-model="otherDamage" value="2" />
-                            <span style="font-family: 'textFont';font-size: 40px; vertical-align: middle">+</span>
-                            {{subtotalDamage()}}
-                        </div>
-                        <div class="blood" ng-show="canBleedOnTotal()" ng-click="bleedsOnTotal=!bleedsOnTotal" ng-mouseenter="shouldShowCrossForTotal=bleedsOnTotal" ng-mouseleave="shouldShowCrossForTotal=!bleedsOnTotal">
-                            <input storage="text" type="hidden" value="true" ng-model="bleedsOnTotal" />
-                            <div style="position: relative; bottom: 7px; left: 4px" ng-show="shouldShowCrossForTotal">x</div>
-                        </div>
-                    </div>
-                    <div style="text-align: right">
-                        <div>
-                            <label style="font-size: 10px; margin-right: 5px">Blödningstakt
-                                <span style="display: inline-block; width: 20px; text-align: right" ng-style='{"color":dangerColor(bleedingDanger())}'>
-                                    <span ng-hide="bleeding()==0">-</span>{{bleeding()}}</span>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- Can bleed other than just from dmg? -->
                     <!-- Journal -->
                 </div>
                 <div style="margin: 10px 0 10px 30px; text-align: left; position: relative">
