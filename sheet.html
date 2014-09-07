@@ -270,6 +270,7 @@
 </head>
 
 <body ng-app="Sheet" ng-controller="SheetCtrl">
+    <div clean='<a id="save" href="failed to create blob" download="{{characterName}}.htm" style="display:none">Spara</a>'></div>
     <div id="top" resizes-to-fit-bg>
         <div style="padding:150px 150px 0 150px; height: 100%">
             <div style="position:relative; height: 120px">
@@ -299,7 +300,7 @@
                     {"name":"Besvärjelsekonst", "value":4, "required": false},
                     {"name":"", "value":0, "required": false}
                     ]' ng-model="characteristics">
-                    <div clean-repeat="skill in characteristics" repeat="<div characteristic></div>"></div>
+                    <div clean='<div ng-repeat="skill in characteristics" class="debug"><div characteristic></div></div>'></div>
                 </div>
             </div>
             <div style="width: 60%; float: right; text-align: right">
@@ -406,6 +407,41 @@
                 // For Safari
                 return message;
             };*/
+
+            window.URL = window.URL || window.webkitURL;
+
+            window.createBlob = function createBlob() {
+                var markup = document.documentElement.innerHTML;
+
+                var blob = new Blob([markup], {
+                    type: 'text/html'
+                });
+
+                return window.URL.createObjectURL(blob);
+            };
+
+            window.saveData = function() {
+                var a = document.getElementById("save");
+                a.href = createBlob();
+                a.click();
+                var url = a.href;
+                window.URL.revokeObjectURL(url);
+            };
+
+            var isCtrl = false;
+            document.onkeyup = function(e) {
+                if (e.keyCode == 17) isCtrl = false;
+            }
+
+            document.onkeydown = function(e) {
+                if (e.keyCode == 17) isCtrl = true;
+                if (e.keyCode == 83 && isCtrl == true) {
+                    //run code for CTRL+S -- ie, save!
+                    saveData();
+                    return false;
+                }
+            }
+
         })
         .controller("SheetCtrl", [
             "$scope",
@@ -751,27 +787,13 @@
                 }
             }
         ])
-        .directive('cleanRepeat', [
+        .directive('clean', [
 
             function() {
                 return {
-                    scope: {
-                        cleanRepeat: '@',
-                        over: '=',
-                        as: '@'
-                    },
-                    template: '<div ng-repeat="value in array"><div link="value" to="{{as}}">{{cleanRepeat}}</div></div>',
-                    link: function(scope, element, attrs) {
-                        scope.array = attrs.over;
-                        scope.cleanRepeat = attrs.repeat;
+                    compile: function compile(elem, attrs, transclude) {
+                        elem.append(attrs.clean);
                     }
-                }
-            }
-        ])
-        .directive('link', [
-            function() {
-                return function(scope, element, attrs) {
-                    scope[attrs.to] = attrs.value;
                 }
             }
         ]);
