@@ -309,13 +309,7 @@
                 <label style="text-align: right">Nya
                     <input resizes storage="text" type="text" placeholder="" value="10" style="min-width: 16px" ng-model="newExp" />
                 </label>
-                <div class="health">
-                    <div style="line-height: 22px">
-                        <h2 style="width: 112px">Kropp</h2>
-                        <h3 style="width: 50px; text-align: right">rv</h3>
-                        <h3 style="width: 120px; text-align: right">Skador</h3>
-                    </div>
-                    <input type="hidden" storage="json" value='[
+                <input type="hidden" storage="json" value='[
                     {"name":"Huvud", "hit": 1, "armor": "3", "damage": "Testar detta"},
                     {"name":"Höger arm", "hit": 2, "armor": "3", "damage": ""},
                     {"name":"Vänster arm", "hit": 3, "armor": "3", "damage": ""},
@@ -323,6 +317,13 @@
                     {"name":"Höger ben", "hit": 5, "armor": "3", "damage": ""},
                     {"name":"Vänster ben", "hit": 6, "armor": "3", "damage": ""}
                     ]' ng-model="bodyparts">
+                <div class="health" clean='
+                    <div style="line-height: 22px">
+                        <h2 style="width: 112px">Kropp</h2>
+                        <h3 style="width: 50px; text-align: right">rv</h3>
+                        <h3 style="width: 120px; text-align: right">Skador</h3>
+                    </div>
+
                     <div ng-repeat="part in bodyparts" style="font-size: 40px; line-height: 30px">
                         <div style="width: 42px; text-align: center">{{part.hit}}</div>
                         <div style="width: 95px">{{part.name}}</div>
@@ -333,8 +334,7 @@
                             <input style="width: 100px; height: 30px; text-align: right; position: relative; top: -4px" type="text" ng-model="part.damage" />
                         </div>
                     </div>
-                    <!-- Journal -->
-                </div>
+                </div>'></div>
                 <div style="margin: 10px 0 10px 30px; text-align: left; position: relative">
                     <h2 style="text-align: left; border-bottom: 1px solid white; margin-bottom: 4px">Vapen och sköldar</h2>
                     <textarea style="width: 70%" placeholder="Jag är obeväpnad!" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
@@ -362,9 +362,9 @@
             if (!is_chrome) {
                 alert("Denna sida är byggd och testad på Chrome och kan se förskräcklig ut i andra läsare. Fortsätt på egen risk...");
             }
-            /*
+            
             window.onbeforeunload = function(e) {
-                var message = "Kom du ihåg att spara?",
+                var message = "Kom du ihåg att spara? Ctrl+S",
                     e = e || window.event;
                 // For IE and Firefox
                 if (e) {
@@ -373,7 +373,7 @@
 
                 // For Safari
                 return message;
-            };*/
+            };
 
             window.URL = window.URL || window.webkitURL;
 
