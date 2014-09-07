@@ -791,8 +791,8 @@
 
             function() {
                 return {
-                    compile: function compile(elem, attrs, transclude) {
-                        elem.append(attrs.clean);
+                    compile: function compile(element, attrs, transclude) {
+                        element.html(attrs.clean);
                     }
                 }
             }
