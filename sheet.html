@@ -828,7 +828,6 @@ d.prop("selected",!1):l=c;f?a.$watch(f,function(a,c){e.$set("value",a);a!==c&&l.
             "$timeout",
             function($interval, $timeout) {
                 return {
-                    restrict: 'A',
                     link: function(scope, element) {
                         var e = element[0];
 
@@ -1041,7 +1040,7 @@ d.prop("selected",!1):l=c;f?a.$watch(f,function(a,c){e.$set("value",a);a!==c&&l.
             </div>\
             <div>\
                 <h2 style="margin: -30px 0 0 0">Beskrivning</h2>\
-                <textarea resizesHeight style="margin: 0 0 20px 0" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.characterDescription"></textarea>\
+                <textarea resizes-height style="margin: 0 0 20px 0" placeholder="Karaktärsbeskrivning" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.characterDescription"></textarea>\
             </div>\
             <div style="clear: both">\
                 <div class="characteristics" style="width: 40%; float: left">\
@@ -1079,12 +1078,12 @@ d.prop("selected",!1):l=c;f?a.$watch(f,function(a,c){e.$set("value",a);a!==c&&l.
                 </div>\
                 <div style="margin: 10px 0 10px 30px; text-align: left; position: relative">\
                     <h2 style="text-align: left; border-bottom: 1px solid white; margin-bottom: 4px">Vapen och sköldar</h2>\
-                    <textarea resizesHeight style="width: 70%" placeholder="Jag är obeväpnad!" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.weapons"></textarea>\
-                    <textarea resizesHeight style="width: 20%; text-align: right; position: absolute; right: 0" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.weaponStats"></textarea>\
+                    <textarea resizes-height style="width: 70%" placeholder="Jag är obeväpnad!" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.weapons"></textarea>\
+                    <textarea resizes-height style="width: 20%; text-align: right; position: absolute; right: 0" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.weaponStats"></textarea>\
                 </div>\
                 <div style="margin: 10px 0 10px 30px; text-align: left">\
                     <h2 style="text-align: left; border-bottom: 1px solid white; margin-bottom: 4px">Utrustning</h2>\
-                    <textarea resizesHeight placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.equipment"></textarea>\
+                    <textarea resizes-height placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.equipment"></textarea>\
                 </div>\
             </div>\
             <div class="stress" style="margin: 10px 0 10px 0px; width: 100%; display: inline-block">\
@@ -1122,7 +1121,7 @@ d.prop("selected",!1):l=c;f?a.$watch(f,function(a,c){e.$set("value",a);a!==c&&l.
             </div>\
             <div style="width: 100%; display: inline-block">\
                 <h2>Journal</h2>\
-                <textarea resizesHeight placeholder="Min berättelse börjar här..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.journal"></textarea>\
+                <textarea resizes-height placeholder="Min berättelse börjar här..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model="state.journal"></textarea>\
             </div>\
         </div>\
         <div id="repeat"></div>\
